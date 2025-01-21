@@ -12,6 +12,9 @@ defmodule ExOciSdk.ConfigTest do
   describe "new!/1" do
     test "create config with valids options using key_content" do
       key_content = """
+
+      # This private key is for testing only, please never expose your private keys directly in the code
+
       -----BEGIN RSA PRIVATE KEY-----
       MIICXQIBAAKBgQC5VE0N2bcbZ8Ery8F6Z4GpKf1CBp4bA/fUSS3NcstPrnJt08sc
       InxTP04ncKU8fiWv6vMfGQTUoi59lDFsZr/7c4T+iS7mw20VXtylq0l58JmhnJVc
