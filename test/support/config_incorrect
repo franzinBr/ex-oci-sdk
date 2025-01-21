@@ -1,0 +1,6 @@
+[DEFAULT
+user=ocid1.user.oc1..test
+fingerprint=aa:bb:cc:dd:ee:ff
+tenancy=ocid1.tenancy.oc1..test
+region=sa-saopaulo-1
+key_file=./test/support/key_content_file.pem
