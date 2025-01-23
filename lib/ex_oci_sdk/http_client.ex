@@ -87,7 +87,12 @@ defmodule ExOciSdk.HTTPClient.Hackney do
         ) :: {:ok, ExOciSdk.HTTPClient.response()} | {:error, ExOciSdk.HTTPClient.error_reason()}
   def request(method, url, body, headers, options) do
     headers = if is_map(headers), do: Map.to_list(headers), else: headers
-    hackney_options = Keyword.merge([with_body: true, pool: :oci_pool], options)
+
+    hackney_options =
+      Keyword.merge(
+        [with_body: true, pool: :oci_pool, connect_timeout: 3000, recv_timeout: :infinity],
+        options
+      )
 
     case :hackney.request(method, url, headers, body, hackney_options) do
       {:ok, status_code, resp_headers} ->
