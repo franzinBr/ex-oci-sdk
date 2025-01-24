@@ -177,7 +177,7 @@ defmodule ExOciSdk.ResponseTest do
       assert {:ok, result} =
                Response.build_response(client, response_policy, type, response)
 
-      assert result.data == ""
+      assert result.data == nil
     end
 
     test "build response from request with nil body", %{client: client} do

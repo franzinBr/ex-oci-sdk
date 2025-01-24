@@ -100,12 +100,15 @@ defmodule ExOciSdk.Response do
     {json_mod, json_options} = Map.fetch!(client, :json)
 
     case IO.iodata_length(response.body) do
-      0 -> response.body
+      0 -> nil
       _ -> apply(json_mod, :decode!, [response.body, json_options])
     end
   end
 
   defp parse_by_content_type(_content_type, %Client{} = _client, response) do
-    response.body
+    case response.body do
+      "" -> nil
+      _ -> response.body
+    end
   end
 end
