@@ -38,6 +38,11 @@ defmodule ExOciSdk.JSON do
               input :: iodata(),
               options :: json_options()
             ) :: map() | no_return()
+
+  @doc """
+  defines the dependencies necessary for the module
+  """
+  @callback deps() :: atom() | list(atom()) | []
 end
 
 defmodule ExOciSdk.JSON.Jason do
@@ -47,14 +52,25 @@ defmodule ExOciSdk.JSON.Jason do
   @behaviour ExOciSdk.JSON
 
   @doc """
+  Define the Jason json parser/generator as a dependency for this module
+  """
+  @impl true
+  @spec deps() :: atom()
+  def deps() do
+    Jason
+  end
+
+  @doc """
   Implementation of `encode_to_iodata!/2` using Jason.
   """
+  @impl true
   @spec encode_to_iodata!(map(), ExOciSdk.JSON.json_options()) :: iodata() | no_return()
   defdelegate encode_to_iodata!(input, options), to: Jason
 
   @doc """
   Implementation of `decode!/2` using Jason.
   """
+  @impl true
   @spec decode!(iodata(), ExOciSdk.JSON.json_options()) :: map() | no_return()
   defdelegate decode!(input, options), to: Jason
 end

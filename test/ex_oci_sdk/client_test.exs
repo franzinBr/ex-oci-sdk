@@ -8,17 +8,35 @@ defmodule ExOciSdk.ClientTest do
   defmodule MockValidHTTPClient do
     @behaviour ExOciSdk.HTTPClient
 
+    def deps, do: [String]
     def request(_method, _url, _headers, _body, _opts), do: {:ok, %{}}
   end
 
   defmodule MockValidJSON do
     @behaviour ExOciSdk.JSON
+
+    def deps, do: [String]
     def encode_to_iodata!(_data, _options), do: {:ok, ""}
     def decode!(_data, _options), do: {:ok, %{}}
   end
 
   defmodule MockInvalidClientModule do
     def random_function(), do: nil
+  end
+
+  defmodule MockValidJsonWithNonInstalledDependency do
+    @behaviour ExOciSdk.JSON
+
+    def deps, do: [NonInstalledDependency, String, NonInstalledDepency2]
+    def encode_to_iodata!(_data, _options), do: {:ok, ""}
+    def decode!(_data, _options), do: {:ok, %{}}
+  end
+
+  defmodule MockValidHTTPWithNonInstalledDependency do
+    @behaviour ExOciSdk.HTTPClient
+
+    def deps, do: NonInstalledDependency
+    def request(_method, _url, _headers, _body, _opts), do: {:ok, %{}}
   end
 
   describe "create!/2" do
@@ -143,6 +161,26 @@ defmodule ExOciSdk.ClientTest do
       assert_raise FunctionClauseError, fn ->
         Client.create!(nil)
       end
+    end
+
+    test "raises error when http client module dependencies are not installed", %{config: config} do
+      assert_raise ArgumentError,
+                   "The http_client module: ExOciSdk.ClientTest.MockValidHTTPWithNonInstalledDependency depends on [NonInstalledDependency]\nPlease ensure that the dependencies are correctly installed\n",
+                   fn ->
+                     Client.create!(config,
+                       http_client: {MockValidHTTPWithNonInstalledDependency, []}
+                     )
+                   end
+    end
+
+    test "raises error when json module dependencies are not installed", %{config: config} do
+      assert_raise ArgumentError,
+                   "The json module: ExOciSdk.ClientTest.MockValidJsonWithNonInstalledDependency depends on [NonInstalledDependency, NonInstalledDepency2]\nPlease ensure that the dependencies are correctly installed\n",
+                   fn ->
+                     Client.create!(config,
+                       json: {MockValidJsonWithNonInstalledDependency, []}
+                     )
+                   end
     end
   end
 end

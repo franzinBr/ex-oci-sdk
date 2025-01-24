@@ -49,6 +49,11 @@ defmodule ExOciSdk.HTTPClient do
               headers :: headers(),
               options :: options()
             ) :: {:ok, response()} | {:error, error_reason()}
+
+  @doc """
+  defines the dependencies necessary for the module
+  """
+  @callback deps() :: atom() | list(atom()) | []
 end
 
 defmodule ExOciSdk.HTTPClient.Hackney do
@@ -61,6 +66,15 @@ defmodule ExOciSdk.HTTPClient.Hackney do
   """
 
   @behaviour ExOciSdk.HTTPClient
+
+  @doc """
+  Define the Hackney HTTP client as a dependency for this module
+  """
+  @impl true
+  @spec deps() :: atom()
+  def deps() do
+    :hackney
+  end
 
   @doc """
   Makes an HTTP request using Hackney.

@@ -68,6 +68,29 @@ defmodule ExOciSdk.Client do
       """
     end
 
+    # TODO: find a way to create a unit test to this raise without compiler throw warnings
+    unless function_exported?(module, :deps, 0) do
+      raise ArgumentError, """
+      Invalid #{name} module: #{inspect(module)}
+      The module must implement the deps/0 function
+      """
+    end
+
+    module_deps = apply(module, :deps, [])
+    module_deps = if is_list(module_deps), do: module_deps, else: [module_deps]
+
+    non_loaded_modules_deps = Enum.filter(module_deps, &(not Code.ensure_loaded?(&1)))
+
+    unless non_loaded_modules_deps == [] do
+      raise ArgumentError, """
+      The #{name} module: #{inspect(module)} depends on #{inspect(non_loaded_modules_deps)}
+      Please ensure that the dependencies are correctly installed
+      """
+    end
+
+    module_deps
+    |> Enum.map(&Application.ensure_all_started/1)
+
     client
   end
 
