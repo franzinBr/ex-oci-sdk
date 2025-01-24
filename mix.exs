@@ -20,7 +20,8 @@ defmodule ExOciSdk.MixProject do
   defp deps do
     [
       {:hackney, "~> 1.20.1", optional: true},
-      {:jason, "~> 1.4.4", optional: true}
+      {:jason, "~> 1.4.4", optional: true},
+      {:mox, "~> 1.0", only: :test}
     ]
   end
 end
