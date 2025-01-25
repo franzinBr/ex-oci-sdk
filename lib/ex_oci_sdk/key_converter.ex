@@ -87,7 +87,6 @@ defmodule ExOciSdk.KeyConverter do
 
   defp do_to_camel_case(string) do
     case String.split(string, "_", trim: true) do
-      [] -> ""
       [first | rest] -> first <> camelize(rest)
     end
   end
@@ -95,7 +94,6 @@ defmodule ExOciSdk.KeyConverter do
   @spec camelize([String.t()]) :: String.t()
   defp camelize([]), do: ""
   defp camelize([h | t]) when h != "", do: String.capitalize(h) <> camelize(t)
-  defp camelize([_ | t]), do: camelize(t)
 
   @spec to_snake_case(convertible()) :: String.t()
   defp to_snake_case(key) when is_atom(key) do

@@ -50,6 +50,34 @@ defmodule ExOciSdk.KeyConverterTest do
       assert KeyConverter.snake_to_camel(snake_case) == expected
     end
 
+    test "trying to convert a non map value" do
+      assert KeyConverter.snake_to_camel(2) == 2
+    end
+
+    test "empty key string" do
+      assert KeyConverter.snake_to_camel(%{"" => "value"}) == %{"" => "value"}
+    end
+
+    test "empty value string" do
+      assert KeyConverter.snake_to_camel(%{empty_key: ""}) == %{"emptyKey" => ""}
+    end
+
+    test "leading underscore" do
+      assert KeyConverter.snake_to_camel(%{_leading_underscore: "value"}) == %{
+               "leadingUnderscore" => "value"
+             }
+    end
+
+    test "empty parts after split" do
+      assert KeyConverter.snake_to_camel(%{empty__parts: "value"}) == %{"emptyParts" => "value"}
+    end
+
+    test "multiple consecutive underscores" do
+      assert KeyConverter.snake_to_camel(%{multiple___underscores: "value"}) == %{
+               "multipleUnderscores" => "value"
+             }
+    end
+
     test "converts lists of maps" do
       snake_case = %{
         nsg_rules: [
@@ -179,6 +207,18 @@ defmodule ExOciSdk.KeyConverterTest do
 
     test "handle empty maps" do
       assert KeyConverter.camel_to_snake(%{}) == %{}
+    end
+
+    test "trying to convert a non map value" do
+      assert KeyConverter.camel_to_snake(2) == 2
+    end
+
+    test "empty key string" do
+      assert KeyConverter.camel_to_snake(%{"" => "value"}) == %{"" => "value"}
+    end
+
+    test "empty value string" do
+      assert KeyConverter.camel_to_snake(%{"camelCase" => ""}) == %{"camel_case" => ""}
     end
 
     test "handles nil values" do
