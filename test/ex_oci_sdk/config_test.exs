@@ -130,6 +130,14 @@ defmodule ExOciSdk.ConfigTest do
       end
     end
 
+    test "raise when profile doesnt exist in config file" do
+      config_file_path = Path.join(__DIR__, "../support/config")
+
+      assert_raise ArgumentError, ~r/Profile \[NON_EXISTENT\] not found in/, fn ->
+        Config.from_file!(config_file_path, "NON_EXISTENT")
+      end
+    end
+
     test "raise when failed to parse config file to INI struct" do
       config_file_path = Path.join(__DIR__, "../support/config_incorrect")
 

@@ -196,5 +196,26 @@ defmodule ExOciSdk.ResponseTest do
 
       assert result.data == nil
     end
+
+    test "build response from request with empty body but with content-type application/json ", %{
+      client: client
+    } do
+      response_policy = %ResponsePolicy{}
+
+      {type, response} =
+        {:ok,
+         %{
+           status_code: 200,
+           body: "",
+           headers: [
+             {"content-type", "application/json"}
+           ]
+         }}
+
+      assert {:ok, result} =
+               Response.build_response(client, response_policy, type, response)
+
+      assert result.data == nil
+    end
   end
 end
