@@ -157,6 +157,22 @@ defmodule ExOciSdk.ClientTest do
                    end
     end
 
+    test "raises error when create client with non existent json module", %{config: config} do
+      assert_raise ArgumentError,
+                   ~r/Invalid json module: NonExistentJsonModule\nThe\nThe module must implement the ExOciSdk.JSON behaviour\n/,
+                   fn ->
+                     Client.create!(config, json: {NonExistentJsonModule, []})
+                   end
+    end
+
+    test "raises error when create client with non existent http client module", %{config: config} do
+      assert_raise ArgumentError,
+                   ~r/Invalid http_client module: NonExistentHTTPClientModule\nThe module must implement the ExOciSdk.HTTPClient behaviour\n/,
+                   fn ->
+                     Client.create!(config, http_client: {NonExistentHTTPClientModule, []})
+                   end
+    end
+
     test "raises error when config is not provided" do
       assert_raise FunctionClauseError, fn ->
         Client.create!(nil)
