@@ -132,8 +132,6 @@ defmodule ExOciSdk.INIParser do
           {:error, "Empty key"}
         end
 
-      _ ->
-        {:error, "Missing value"}
     end
   end
 

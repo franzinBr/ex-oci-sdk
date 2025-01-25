@@ -256,5 +256,15 @@ defmodule ExOciSdk.INIParserTest do
                }
              }
     end
+
+    test "empty section name" do
+      content = """
+      []
+      value = 1
+      """
+
+      assert INIParser.parse(content) ==
+               {:error, "Failed to parse INI content: Invalid section format: Empty section name"}
+    end
   end
 end
