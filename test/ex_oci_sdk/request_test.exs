@@ -230,5 +230,35 @@ defmodule ExOciSdk.RequestTest do
       assert {:ok, response} = Request.execute(request, client)
       assert response.data == %{"message" => "accepted"}
     end
+
+    test "execute request with text/plain body", %{client: client} do
+      request =
+        RequestBuilder.new(:get, "https://api.{region}.oracle.com", "/instances")
+        |> RequestBuilder.with_header("content-type", "text/plain")
+        |> RequestBuilder.with_body("Hello, World")
+
+      expect(ExOciSdk.JSONMock, :decode!, fn input, _options ->
+        assert input == ~s({"message": "Hello, World"})
+        %{"message" => "Hello, World"}
+      end)
+
+      expect(ExOciSdk.HTTPClientMock, :request, fn _method, url, body, headers, _options ->
+        assert url == "https://api.#{client.config.region}.oracle.com/instances"
+        assert body == "Hello, World"
+        assert Map.has_key?(headers, "authorization")
+
+        {:ok,
+         %{
+           status_code: 200,
+           body: ~s({"message": "Hello, World"}),
+           headers: [
+             {"content-type", "application/json"}
+           ]
+         }}
+      end)
+
+      assert {:ok, response} = Request.execute(request, client)
+      assert response.data == %{"message" => "Hello, World"}
+    end
   end
 end

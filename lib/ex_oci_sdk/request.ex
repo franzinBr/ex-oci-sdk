@@ -55,9 +55,10 @@ defmodule ExOciSdk.Request do
          body: body
        }) do
     body =
-      case is_map(body) and body != %{} do
-        true -> body
-        false -> ""
+      cond do
+        is_map(body) and body != %{} -> body
+        is_binary(body) and body != "" -> body
+        true -> ""
       end
 
     case Map.get(headers, "content-type") do
