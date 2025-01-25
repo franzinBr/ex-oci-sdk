@@ -4,7 +4,7 @@ defmodule ExOciSdk.Request do
   and response processing.
   """
 
-  alias ExOciSdk.{Config, Client, RequestBuilder, Response, Signer}
+  alias ExOciSdk.{Config, Client, RequestBuilder, Response, Signer, KeyConverter}
 
   @doc """
   Executes an HTTP request built by RequestBuilder.
@@ -65,6 +65,7 @@ defmodule ExOciSdk.Request do
         body
 
       "application/json" ->
+        body = KeyConverter.snake_to_camel(body)
         {json_mod, json_options} = json
         apply(json_mod, :encode_to_iodata!, [body, json_options])
 

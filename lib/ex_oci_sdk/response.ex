@@ -7,7 +7,7 @@ defmodule ExOciSdk.Response do
   It includes functionality for parsing responses, extracting metadata, and applying response policies.
   """
 
-  alias ExOciSdk.{HTTPClient, Client, ResponsePolicy}
+  alias ExOciSdk.{HTTPClient, Client, ResponsePolicy, KeyConverter}
 
   @type return_type :: :ok | :error
   @type response_metadata :: %{opc_request_id: String.t()}
@@ -100,8 +100,11 @@ defmodule ExOciSdk.Response do
     {json_mod, json_options} = Map.fetch!(client, :json)
 
     case IO.iodata_length(response.body) do
-      0 -> nil
-      _ -> apply(json_mod, :decode!, [response.body, json_options])
+      0 ->
+        nil
+
+      _ ->
+        apply(json_mod, :decode!, [response.body, json_options]) |> KeyConverter.camel_to_snake()
     end
   end
 
