@@ -38,7 +38,7 @@ queue_client =
 queue_id = "QUEUE_OCID"
 
 # Put messages in a queue
-ExOciSdk.Queue.QueueClient.put_messages(queue_client, queue_id, %{
+{:ok, _} = ExOciSdk.Queue.QueueClient.put_messages(queue_client, queue_id, %{
   "messages" => [
     %{"content" => "Hello world from ex-oci-sdk"},
     %{"content" => ":D"},
@@ -46,7 +46,7 @@ ExOciSdk.Queue.QueueClient.put_messages(queue_client, queue_id, %{
 })
 
 # Get messages from a queue
-ExOciSdk.Queue.QueueClient.get_messages(queue_client, queue_id,
+{:ok, messages} = ExOciSdk.Queue.QueueClient.get_messages(queue_client, queue_id,
    limit: 10,
    timeout_in_seconds: 0
 )
