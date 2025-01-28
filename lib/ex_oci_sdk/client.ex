@@ -31,8 +31,8 @@ defmodule ExOciSdk.Client do
 
     * `config` - Required configuration for the client
     * `opts` - Optional parameters to customize the client
-      * `:http_client` - Tuple with {module, options} for the HTTP client. Module must implements ExOciSdk.HTTPClient
-      * `:json` - Tuple with {module, options} for JSON serialization. Module must implements ExOciSdk.JSON
+      * `:http_client` - Tuple with {module, options} for the HTTP client. Module must implements `ExOciSdk.HTTPClient`
+      * `:json` - Tuple with {module, options} for JSON serialization. Module must implements `ExOciSdk.JSON`
 
   ## Returns
     * `t:t/0` - The configuration struct

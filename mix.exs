@@ -49,6 +49,12 @@ defmodule ExOciSdk.MixProject do
 
   defp groups_for_modules do
     [
+      "HTTP/Json Behaviours & Impl": [
+        ExOciSdk.HTTPClient,
+        ExOciSdk.HTTPClient.Hackney,
+        ExOciSdk.JSON,
+        ExOciSdk.JSON.Jason
+      ],
       Queue: [
         ExOciSdk.Queue.QueueClient,
         ExOciSdk.Queue.Types
