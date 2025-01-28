@@ -9,7 +9,7 @@ The package can be installed by adding `ex_oci_sdk` to your list of dependencies
 ```elixir
 def deps do
   [
-    {:ex_oci_sdk, "~> 0.1.0"},
+    {:ex_oci_sdk, "~> 0.0.1"},
     # Optional dependencies
     {:hackney, "~> 1.20.1"},  # Default HTTP client
     {:jason, "~> 1.4.4"}      # Default JSON parser
@@ -62,7 +62,7 @@ Detailed documentation is available at [https://hexdocs.pm/ex_oci_sdk](https://h
 
 ## License
 
-This project is licensed under the Apache License 2.0 License - see the [LICENSE.md](LICENSE.md) file for details.
+This project is licensed under the Apache License 2.0 License - see the license file for details.
 
 ## Project Status
 
