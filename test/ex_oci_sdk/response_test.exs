@@ -217,5 +217,25 @@ defmodule ExOciSdk.ResponseTest do
 
       assert result.data == nil
     end
+
+    test "build response from request with content-type in title case", %{client: client} do
+      response_policy = %ResponsePolicy{}
+
+      {type, response} =
+        {:ok,
+         %{
+           status_code: 200,
+           body: ~s({"message": "success"}),
+           headers: [
+             {"Content-Type", "Application/json"},
+             {"opc-request-id", "request123"}
+           ]
+         }}
+
+      assert {:ok, result} =
+               Response.build_response(client, response_policy, type, response)
+
+      assert result.data == %{"message" => "success"}
+    end
   end
 end

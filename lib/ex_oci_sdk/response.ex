@@ -87,8 +87,11 @@ defmodule ExOciSdk.Response do
   defp parse_response(%Client{} = client, response) do
     content_type =
       Enum.find_value(response.headers, fn
-        {"content-type", value} -> value
-        _ -> nil
+        {header, value} when is_binary(header) ->
+          if String.downcase(header) == "content-type", do: String.downcase(value)
+
+        _ ->
+          nil
       end)
 
     parse_by_content_type(content_type, client, response)
