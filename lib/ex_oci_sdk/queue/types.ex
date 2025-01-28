@@ -71,7 +71,7 @@ defmodule ExOciSdk.Queue.Types do
 
   * `:opc_request_id` - Custom request identifier for tracing
   """
-  @type queue_client_default_opts :: [
+  @type queue_default_opts :: [
           opc_request_id: opc_request_id()
         ]
 
