@@ -121,14 +121,14 @@ defmodule ExOciSdk.Queue.Types do
   @typedoc """
   Map for putting multiple messages into a queue.
   """
-  @type put_messages_details :: %{
+  @type put_messages_input :: %{
           messages: [message()]
         }
 
   @typedoc """
   Structure for deleting multiple messages from a queue.
   """
-  @type delete_messages_details :: %{
+  @type delete_messages_input :: %{
           entries: [
             %{
               receipt: message_receipt()
@@ -139,14 +139,14 @@ defmodule ExOciSdk.Queue.Types do
   @typedoc """
   Map for updating a single message's visibility timeout.
   """
-  @type update_message_details :: %{
+  @type update_message_input :: %{
           visibility_in_seconds: pos_integer()
         }
 
   @typedoc """
   Structure for updating visibility timeout for multiple messages.
   """
-  @type update_messages_details :: %{
+  @type update_messages_input :: %{
           entries: [
             %{
               receipt: message_receipt(),

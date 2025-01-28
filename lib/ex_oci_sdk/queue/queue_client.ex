@@ -106,7 +106,7 @@ defmodule ExOciSdk.Queue.QueueClient do
 
     * `queue_client` - Queue client instance `t:t/0`
     * `queue_id` - Target queue identifier
-    * `put_messages_details` - Message details, see `t:ExOciSdk.Queue.Types.put_messages_details/0`
+    * `put_messages_input` - Message details, see `t:ExOciSdk.Queue.Types.put_messages_input/0`
     * `opts` - Options list, see `t:ExOciSdk.Queue.Types.queue_client_default_opts/0`
 
   ## Returns
@@ -117,11 +117,11 @@ defmodule ExOciSdk.Queue.QueueClient do
   @spec put_messages(
           t(),
           Types.queue_id(),
-          Types.put_messages_details(),
+          Types.put_messages_input(),
           Types.queue_client_default_opts()
         ) ::
           {:ok, ResponseTypes.response_success()} | {:error, ResponseTypes.response_error()}
-  def put_messages(%__MODULE__{} = queue_client, queue_id, put_messages_details, opts \\ []) do
+  def put_messages(%__MODULE__{} = queue_client, queue_id, put_messages_input, opts \\ []) do
     settings = service_settings()
     service_endpoint = queue_client.service_endpoint || settings.service_endpoint
 
@@ -131,7 +131,7 @@ defmodule ExOciSdk.Queue.QueueClient do
       "accept" => settings.accept,
       "opc-request-id" => Keyword.get(opts, :opc_request_id)
     })
-    |> RequestBuilder.with_body(put_messages_details)
+    |> RequestBuilder.with_body(put_messages_input)
     |> Request.execute(queue_client.client)
   end
 
@@ -245,7 +245,7 @@ defmodule ExOciSdk.Queue.QueueClient do
 
     * `queue_client` - Queue client instance `t:t/0`
     * `queue_id` - Target queue identifier
-    * `delete_messages_details` - Details of messages to delete, see `t:ExOciSdk.Queue.Types.delete_messages_details/0`
+    * `delete_messages_input` - Details of messages to delete, see `t:ExOciSdk.Queue.Types.delete_messages_input/0`
     * `opts` - Options list, see `t:ExOciSdk.Queue.Types.queue_client_default_opts/0`
 
   ## Returns
@@ -256,11 +256,11 @@ defmodule ExOciSdk.Queue.QueueClient do
   @spec delete_messages(
           t(),
           Types.queue_id(),
-          Types.delete_messages_details(),
+          Types.delete_messages_input(),
           Types.queue_client_default_opts()
         ) ::
           {:ok, ResponseTypes.response_success()} | {:error, ResponseTypes.response_error()}
-  def delete_messages(%__MODULE__{} = queue_client, queue_id, delete_messages_details, opts \\ []) do
+  def delete_messages(%__MODULE__{} = queue_client, queue_id, delete_messages_input, opts \\ []) do
     settings = service_settings()
     service_endpoint = queue_client.service_endpoint || settings.service_endpoint
 
@@ -274,7 +274,7 @@ defmodule ExOciSdk.Queue.QueueClient do
       "accept" => settings.accept,
       "opc-request-id" => Keyword.get(opts, :opc_request_id)
     })
-    |> RequestBuilder.with_body(delete_messages_details)
+    |> RequestBuilder.with_body(delete_messages_input)
     |> Request.execute(queue_client.client)
   end
 
@@ -286,7 +286,7 @@ defmodule ExOciSdk.Queue.QueueClient do
     * `queue_client` - Queue client instance `t:t/0`
     * `queue_id` - Target queue identifier
     * `message_receipt` - Receipt of the message to update
-    * `update_message_details` - Update details, see `t:ExOciSdk.Queue.Types.update_message_details/0`
+    * `update_message_input` - Update details, see `t:ExOciSdk.Queue.Types.update_message_input/0`
     * `opts` - Options list, see `t:ExOciSdk.Queue.Types.queue_client_default_opts/0`
 
   ## Returns
@@ -298,7 +298,7 @@ defmodule ExOciSdk.Queue.QueueClient do
           t(),
           Types.queue_id(),
           Types.message_receipt(),
-          Types.update_message_details(),
+          Types.update_message_input(),
           Types.queue_client_default_opts()
         ) ::
           {:ok, ResponseTypes.response_success()} | {:error, ResponseTypes.response_error()}
@@ -306,7 +306,7 @@ defmodule ExOciSdk.Queue.QueueClient do
         %__MODULE__{} = queue_client,
         queue_id,
         message_receipt,
-        update_message_details,
+        update_message_input,
         opts \\ []
       ) do
     settings = service_settings()
@@ -322,7 +322,7 @@ defmodule ExOciSdk.Queue.QueueClient do
       "accept" => settings.accept,
       "opc-request-id" => Keyword.get(opts, :opc_request_id)
     })
-    |> RequestBuilder.with_body(update_message_details)
+    |> RequestBuilder.with_body(update_message_input)
     |> Request.execute(queue_client.client)
   end
 
@@ -333,7 +333,7 @@ defmodule ExOciSdk.Queue.QueueClient do
 
     * `queue_client` - Queue client instance `t:t/0`
     * `queue_id` - Target queue identifier
-    * `update_messages_details` - Update details, see `t:ExOciSdk.Queue.Types.update_messages_details/0`
+    * `update_messages_input` - Update details, see `t:ExOciSdk.Queue.Types.update_messages_input/0`
     * `opts` - Options list, see `t:ExOciSdk.Queue.Types.queue_client_default_opts/0`
 
   ## Returns
@@ -344,11 +344,11 @@ defmodule ExOciSdk.Queue.QueueClient do
   @spec update_messages(
           t(),
           Types.queue_id(),
-          Types.update_messages_details(),
+          Types.update_messages_input(),
           Types.queue_client_default_opts()
         ) ::
           {:ok, ResponseTypes.response_success()} | {:error, ResponseTypes.response_error()}
-  def update_messages(%__MODULE__{} = queue_client, queue_id, update_messages_details, opts \\ []) do
+  def update_messages(%__MODULE__{} = queue_client, queue_id, update_messages_input, opts \\ []) do
     settings = service_settings()
     service_endpoint = queue_client.service_endpoint || settings.service_endpoint
 
@@ -362,7 +362,7 @@ defmodule ExOciSdk.Queue.QueueClient do
       "accept" => settings.accept,
       "opc-request-id" => Keyword.get(opts, :opc_request_id)
     })
-    |> RequestBuilder.with_body(update_messages_details)
+    |> RequestBuilder.with_body(update_messages_input)
     |> Request.execute(queue_client.client)
   end
 end
