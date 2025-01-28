@@ -1,12 +1,12 @@
 defmodule ExOciSdk.INIParser do
-  @moduledoc """
-  A parser for INI configuration files.
-  Supports:
-  - Sections with properties
-  - Comments (starting with ; or #)
-  - Basic data types (strings, numbers, booleans)
-  - Nested sections
-  """
+  @moduledoc false
+
+  # A parser for INI configuration files.
+  # Supports:
+  # - Sections with properties
+  # - Comments (starting with ; or #)
+  # - Basic data types (strings, numbers, booleans)
+  # - Nested sections
 
   @type ini_value :: String.t() | boolean() | integer() | float()
   @type ini_section :: %{String.t() => ini_value()}
@@ -131,7 +131,6 @@ defmodule ExOciSdk.INIParser do
         else
           {:error, "Empty key"}
         end
-
     end
   end
 

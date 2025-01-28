@@ -1,10 +1,10 @@
 defmodule ExOciSdk.Request do
-  @moduledoc """
-  Handles HTTP request execution for the OCI SDK, including URL building, body building, request signing,
-  and response processing.
-  """
+  @moduledoc false
+  # Handles HTTP request execution for the OCI SDK, including URL building, body building, request signing,
+  # and response processing.
 
   alias ExOciSdk.{Config, Client, RequestBuilder, Response, Signer, KeyConverter}
+  alias ExOciSdk.Response.Types, as: ResponseTypes
 
   @doc """
   Executes an HTTP request built by RequestBuilder.
@@ -20,7 +20,7 @@ defmodule ExOciSdk.Request do
     * `{:error, response_error}` - Unsuccessful response
   """
   @spec execute(RequestBuilder.t(), Client.t()) ::
-          {:ok, Response.response_success()} | {:error, Response.response_error()}
+          {:ok, ResponseTypes.response_success()} | {:error, ResponseTypes.response_error()}
   def execute(%RequestBuilder{} = request, %Client{} = client) do
     url = build_url(client.config, request)
     uri = URI.new!(url)

@@ -1,15 +1,15 @@
 defmodule ExOciSdk.Signer do
-  @moduledoc """
-  Handles request signing for the OCI (Oracle Cloud Infrastructure) API.
+  @moduledoc false
+  # Handles request signing for the OCI (Oracle Cloud Infrastructure) API.
 
-  This module implements the OCI request signing process, which includes:
-  - Adding required headers (date, host, content headers for POST/PUT/PATCH)
-  - Generating a signature using RSA-SHA256
-  - Constructing the final Authorization header
+  # This module implements the OCI request signing process, which includes:
+  # - Adding required headers (date, host, content headers for POST/PUT/PATCH)
+  # - Generating a signature using RSA-SHA256
+  # - Constructing the final Authorization header
 
-  The signing process follows the OCI API specification for request authentication.
-  https://docs.oracle.com/en-us/iaas/Content/API/Concepts/signingrequests.htm
-  """
+  # The signing process follows the OCI API specification for request authentication.
+  # https://docs.oracle.com/en-us/iaas/Content/API/Concepts/signingrequests.htm
+  #
 
   alias ExOciSdk.Client
   alias ExOciSdk.Config

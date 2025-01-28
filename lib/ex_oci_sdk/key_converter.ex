@@ -1,29 +1,17 @@
 defmodule ExOciSdk.KeyConverter do
-  @moduledoc """
-  Internal module for handling key format conversions between Elixir and OCI API conventions.
+  @moduledoc false
+  # Internal module for handling key format conversions between Elixir and OCI API conventions.
 
-  This module is responsible for automatically converting map keys between Elixir's snake_case convention
-  and OCI API's camelCase requirement.
+  # This module is responsible for automatically converting map keys between Elixir's snake_case convention
+  # and OCI API's camelCase requirement.
 
-  ## Key Features
+  # Key Features
 
-    * Automatic conversion of map keys for API requests (snake_case -> camelCase)
-    * Automatic conversion of API responses (camelCase -> snake_case)
-    * Automatic conversion key from atom to string
-    * Proper handling of common OCI API patterns including acronyms (e.g., OCID, VCN, NAT)
-    * No modification of map values, only keys are transformed
-
-
-  ## Examples
-
-      iex> map = %{user_name: "Maria", address_info: %{street_name: "Lagoa 51"}}
-      iex> ExOciSdk.KeyConverter.snake_to_camel(map)
-      %{"userName" => "Maria", "addressInfo" => %{"streetName" => "Lagoa 51"}}
-
-      iex> map = %{userName: "Maria", addressInfo: %{streetName: "Lagoa 51"}}
-      iex> ExOciSdk.KeyConverter.camel_to_snake(map)
-      %{"user_name" => "Maria", "address_info" => %{"street_name" => "Lagoa 51"}}
-  """
+  #   * Automatic conversion of map keys for API requests (snake_case -> camelCase)
+  #   * Automatic conversion of API responses (camelCase -> snake_case)
+  #   * Automatic conversion key from atom to string
+  #   * Proper handling of common OCI API patterns including acronyms (e.g., OCID, VCN, NAT)
+  #   * No modification of map values, only keys are transformed
 
   @type direction :: :snake_to_camel | :camel_to_snake
   @type convertible :: String.t() | atom()
@@ -31,6 +19,12 @@ defmodule ExOciSdk.KeyConverter do
   @doc """
   Converts all keys in a map from snake_case to camelCase format.
   Works recursively on nested maps and lists.
+
+  ## Examples
+
+      iex> map = %{user_name: "Maria", address_info: %{street_name: "Lagoa 51"}}
+      iex> ExOciSdk.KeyConverter.snake_to_camel(map)
+      %{"userName" => "Maria", "addressInfo" => %{"streetName" => "Lagoa 51"}}
   """
   @spec snake_to_camel(map() | term()) :: map() | term()
   def snake_to_camel(map) when is_map(map) do
@@ -44,6 +38,12 @@ defmodule ExOciSdk.KeyConverter do
   @doc """
   Converts all keys in a map from camelCase to snake_case format.
   Works recursively on nested maps and lists.
+
+  ## Examples
+
+      iex> map = %{userName: "Maria", addressInfo: %{streetName: "Lagoa 51"}}
+      iex> ExOciSdk.KeyConverter.camel_to_snake(map)
+      %{"user_name" => "Maria", "address_info" => %{"street_name" => "Lagoa 51"}}
   """
   @spec camel_to_snake(map() | term()) :: map() | term()
   def camel_to_snake(map) when is_map(map) do

@@ -1,18 +1,14 @@
 defmodule ExOciSdk.Response do
-  @moduledoc """
-  Handles HTTP response processing for the OCI SDK.
+  @moduledoc false
+  # Handles HTTP response processing for the OCI SDK.
 
-  This module is responsible for processing HTTP responses from the Oracle Cloud Infrastructure API,
-  handling both successful and error responses, and converting them into a standardized format.
-  It includes functionality for parsing responses, extracting metadata, and applying response policies.
-  """
+  # This module is responsible for processing HTTP responses from the Oracle Cloud Infrastructure API,
+  # handling both successful and error responses, and converting them into a standardized format.
+  # It includes functionality for parsing responses, extracting metadata, and applying response policies.
+  #
 
   alias ExOciSdk.{HTTPClient, Client, ResponsePolicy, KeyConverter}
-
-  @type return_type :: :ok | :error
-  @type response_metadata :: %{opc_request_id: String.t()}
-  @type response_error :: %{error: term(), metadata: response_metadata() | nil}
-  @type response_success :: %{data: term(), metadata: response_metadata()}
+  alias ExOciSdk.Response.Types
 
   @doc """
   Builds a standardized response from an HTTP client response.
@@ -38,7 +34,9 @@ defmodule ExOciSdk.Response do
           ResponsePolicy.t(),
           atom(),
           HTTPClient.response() | HTTPClient.error_reason()
-        ) :: {:ok, response_success()} | {:error, response_error()}
+        ) ::
+          {:ok, Types.response_success()}
+          | {:error, Types.response_error()}
   def build_response(%Client{} = _client, %ResponsePolicy{} = _response_policy, :error, response) do
     http_client_error = %{error: response, metadata: nil}
     {:error, http_client_error}
@@ -51,7 +49,8 @@ defmodule ExOciSdk.Response do
     {return_type, return}
   end
 
-  @spec build_return_type(ResponsePolicy.t(), HTTPClient.response()) :: return_type()
+  @spec build_return_type(ResponsePolicy.t(), HTTPClient.response()) ::
+          Types.return_type()
   defp build_return_type(%ResponsePolicy{} = response_policy, response) do
     case response.status_code in response_policy.status_codes_success do
       true -> :ok
@@ -59,8 +58,8 @@ defmodule ExOciSdk.Response do
     end
   end
 
-  @spec build_return(Client.t(), return_type(), HTTPClient.response()) ::
-          response_success() | response_error()
+  @spec build_return(Client.t(), Types.return_type(), HTTPClient.response()) ::
+          Types.response_success() | Types.response_error()
   defp build_return(%Client{} = client, :error, response) do
     metadata = build_metadata(response)
     response = parse_response(client, response)
@@ -73,7 +72,7 @@ defmodule ExOciSdk.Response do
     %{data: response, metadata: metadata}
   end
 
-  @spec build_metadata(HTTPClient.response()) :: response_metadata()
+  @spec build_metadata(HTTPClient.response()) :: Types.response_metadata()
   defp build_metadata(response) do
     opc_request_id =
       Enum.find_value(response.headers, fn
@@ -114,4 +113,11 @@ defmodule ExOciSdk.Response do
       _ -> response.body
     end
   end
+end
+
+defmodule ExOciSdk.Response.Types do
+  @type return_type :: :ok | :error
+  @type response_metadata :: %{opc_request_id: String.t()}
+  @type response_error :: %{error: term(), metadata: response_metadata() | nil}
+  @type response_success :: %{data: term(), metadata: response_metadata()}
 end

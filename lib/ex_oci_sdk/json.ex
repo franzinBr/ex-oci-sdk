@@ -61,14 +61,14 @@ defmodule ExOciSdk.JSON.Jason do
   end
 
   @doc """
-  Implementation of `encode_to_iodata!/2` using Jason.
+  Implementation of `c:ExOciSdk.JSON.encode_to_iodata!/2` using Jason.
   """
   @impl true
   @spec encode_to_iodata!(map(), ExOciSdk.JSON.json_options()) :: iodata() | no_return()
   defdelegate encode_to_iodata!(input, options), to: Jason
 
   @doc """
-  Implementation of `decode!/2` using Jason.
+  Implementation of `c:ExOciSdk.JSON.decode!/2` using Jason.
   """
   @impl true
   @spec decode!(iodata(), ExOciSdk.JSON.json_options()) :: map() | no_return()

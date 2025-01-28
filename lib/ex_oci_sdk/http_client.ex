@@ -79,7 +79,7 @@ defmodule ExOciSdk.HTTPClient.Hackney do
   @doc """
   Makes an HTTP request using Hackney.
 
-  Implements the `ExOciSdk.HTTPClient.request/5` callback using Hackney as the underlying
+  Implements the `c:ExOciSdk.HTTPClient.request/5` callback using Hackney as the underlying
   HTTP client. Converts Hackney's response format to match the expected behaviour format.
 
   ## Parameters

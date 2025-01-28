@@ -1,8 +1,7 @@
 defmodule ExOciSdk.RequestBuilder do
-  @moduledoc """
-  Builds HTTP requests with configurable method, URL, headers, query params and body.
-  Provides a fluent interface for request construction.
-  """
+  @moduledoc false
+  # Builds HTTP requests with configurable method, URL, headers, query params and body.
+  # Provides a fluent interface for request construction.
 
   alias ExOciSdk.{ResponsePolicy, HTTPClient}
 
