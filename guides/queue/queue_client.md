@@ -36,7 +36,7 @@ Retrieve messages from a queue with configurable visibility timeout and batch si
 ```elixir
 queue_id = "ocid1.queue.random-region.amaaabaa2ikrzdya6issa228717dhhdhsahffjsjjazzznffnpo8"
 
-{:ok, response} = QueueClient.get_messages(queue_client, queue_id,
+{:ok, response} = ExOciSdk.Queue.QueueClient.get_messages(queue_client, queue_id,
   visibility_in_seconds: 30,
   timeout_in_seconds: 5,
   limit: 10,
@@ -74,7 +74,7 @@ messages = %{
 
 queue_id = "ocid1.queue.random-region.amaaabaa2ikrzdya6issa228717dhhdhsahffjsjjazzznffnpo8"
 
-{:ok, response} = QueueClient.put_messages(queue_client, queue_id, messages)
+{:ok, response} = ExOciSdk.Queue.QueueClient.put_messages(queue_client, queue_id, messages)
 ```
 
 see more details in `ExOciSdk.Queue.QueueClient.put_messages/4`
@@ -90,7 +90,7 @@ update_input = %{
 
 queue_id = "ocid1.queue.random-region.amaaabaa2ikrzdya6issa228717dhhdhsahffjsjjazzznffnpo8"
 
-{:ok, response} = QueueClient.update_message(queue_client, queue_id, message_receipt, update_input)
+{:ok, response} = ExOciSdk.Queue.QueueClient.update_message(queue_client, queue_id, message_receipt, update_input)
 ```
 
 Or update multiple messages at once:
@@ -111,7 +111,7 @@ update_messages = %{
 
 queue_id = "ocid1.queue.random-region.amaaabaa2ikrzdya6issa228717dhhdhsahffjsjjazzznffnpo8"
 
-{:ok, response} = QueueClient.update_messages(queue_client, queue_id, update_messages)
+{:ok, response} = ExOciSdk.Queue.QueueClient.update_messages(queue_client, queue_id, update_messages)
 ```
 
 see more details in `ExOciSdk.Queue.QueueClient.update_messages/4`
@@ -123,7 +123,7 @@ Delete a single message:
 ```elixir
 queue_id = "ocid1.queue.random-region.amaaabaa2ikrzdya6issa228717dhhdhsahffjsjjazzznffnpo8"
 
-{:ok, response} = QueueClient.delete_message(queue_client, queue_id, message_receipt)
+{:ok, response} = ExOciSdk.Queue.QueueClient.delete_message(queue_client, queue_id, message_receipt)
 ```
 
 see more details in `ExOciSdk.Queue.QueueClient.delete_message/4`
@@ -144,7 +144,7 @@ delete_messages = %{
 
 queue_id = "ocid1.queue.random-region.amaaabaa2ikrzdya6issa228717dhhdhsahffjsjjazzznffnpo8"
 
-{:ok, response} = QueueClient.delete_messages(queue_client, queue_id, delete_messages)
+{:ok, response} = ExOciSdk.Queue.QueueClient.delete_messages(queue_client, queue_id, delete_messages)
 ```
 
 see more details in `ExOciSdk.Queue.QueueClient.delete_messages/4`
@@ -156,7 +156,7 @@ Get statistics about your queue:
 ```elixir
 queue_id = "ocid1.queue.random-region.amaaabaa2ikrzdya6issa228717dhhdhsahffjsjjazzznffnpo8"
 
-{:ok, response} = QueueClient.get_stats(queue_client, queue_id,
+{:ok, response} = ExOciSdk.Queue.QueueClient.get_stats(queue_client, queue_id,
   channel_id: "my-channel"
 )
 ```
@@ -171,7 +171,7 @@ List channels in a queue:
 
 queue_id = "ocid1.queue.random-region.amaaabaa2ikrzdya6issa228717dhhdhsahffjsjjazzznffnpo8"
 
-{:ok, response} = QueueClient.list_channels(queue_client, queue_id,
+{:ok, response} = ExOciSdk.Queue.QueueClient.list_channels(queue_client, queue_id,
   limit: 10,
   page: 1,
   channel_filter: "my-channel"
