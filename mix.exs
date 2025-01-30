@@ -41,9 +41,10 @@ defmodule ExOciSdk.MixProject do
 
   defp docs do
     [
-      main: "readme",
+      main: "overview",
       groups_for_modules: groups_for_modules(),
-      extras: ["README.md"]
+      extras: extras(),
+      groups_for_extras: groups_for_extras()
     ]
   end
 
@@ -59,6 +60,24 @@ defmodule ExOciSdk.MixProject do
         ExOciSdk.Queue.QueueClient,
         ExOciSdk.Queue.Types
       ]
+    ]
+  end
+
+  defp extras do
+    [
+      "guides/overview.md",
+      "guides/installation.md",
+      "guides/configuration_and_client/config.md",
+      "guides/configuration_and_client/client.md",
+      "guides/queue/queue_client.md",
+      "guides/queue/queue_admin_client.md"
+    ]
+  end
+
+  defp groups_for_extras do
+    [
+      "Configuration & Base Client": ~r/guides\/configuration_and_client\/.?/,
+      Queue: ~r/guides\/queue\/.?/
     ]
   end
 end
