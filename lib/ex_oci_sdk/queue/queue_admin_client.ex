@@ -136,7 +136,7 @@ defmodule ExOciSdk.Queue.QueueAdminClient do
     settings = service_settings()
     service_endpoint = queue_admin_client.service_endpoint || settings.service_endpoint
 
-    RequestBuilder.new(:get, service_endpoint, "/queues/")
+    RequestBuilder.new(:get, service_endpoint, "/queues")
     |> RequestBuilder.with_headers(%{
       "content-type" => settings.content_type,
       "accept" => settings.accept,
@@ -152,6 +152,10 @@ defmodule ExOciSdk.Queue.QueueAdminClient do
       "sortOrder" => Keyword.get(opts, :sort_order),
       "sortBy" => Keyword.get(opts, :sort_by)
     })
+    |> RequestBuilder.with_response_policy(
+      ResponsePolicy.new()
+      |> ResponsePolicy.with_headers_to_extract("opc-next-page")
+    )
     |> Request.execute(queue_admin_client.client)
   end
 
@@ -454,6 +458,10 @@ defmodule ExOciSdk.Queue.QueueAdminClient do
       "limit" => Keyword.get(opts, :limit),
       "page" => Keyword.get(opts, :page)
     })
+    |> RequestBuilder.with_response_policy(
+      ResponsePolicy.new()
+      |> ResponsePolicy.with_headers_to_extract("opc-next-page")
+    )
     |> Request.execute(queue_admin_client.client)
   end
 
@@ -490,6 +498,10 @@ defmodule ExOciSdk.Queue.QueueAdminClient do
       "limit" => Keyword.get(opts, :limit),
       "page" => Keyword.get(opts, :page)
     })
+    |> RequestBuilder.with_response_policy(
+      ResponsePolicy.new()
+      |> ResponsePolicy.with_headers_to_extract("opc-next-page")
+    )
     |> Request.execute(queue_admin_client.client)
   end
 
@@ -527,6 +539,10 @@ defmodule ExOciSdk.Queue.QueueAdminClient do
       "limit" => Keyword.get(opts, :limit),
       "page" => Keyword.get(opts, :page)
     })
+    |> RequestBuilder.with_response_policy(
+      ResponsePolicy.new()
+      |> ResponsePolicy.with_headers_to_extract("opc-next-page")
+    )
     |> Request.execute(queue_admin_client.client)
   end
 end
