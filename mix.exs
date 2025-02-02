@@ -58,6 +58,7 @@ defmodule ExOciSdk.MixProject do
       ],
       Queue: [
         ExOciSdk.Queue.QueueClient,
+        ExOciSdk.Queue.QueueAdminClient,
         ExOciSdk.Queue.Types
       ]
     ]

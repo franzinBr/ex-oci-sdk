@@ -1,3 +1,6 @@
+[![Hex.pm](https://img.shields.io/hexpm/v/ex_oci_sdk?style=flat&color=blue)](https://hex.pm/packages/ex_oci_sdk)
+[![Docs](https://img.shields.io/badge/docs-exocisdk-yellow)](https://hexdocs.pm/ex_oci_sdk)
+
 # ex-oci-sdk
 
 An Elixir SDK for Oracle Cloud Infrastructure (OCI) designed to provide a clean and efficient way to interact with OCI services. Built on Elixir's principles of simplicity and maintainability, this SDK offers a straightforward interface while maintaining the robustness required for enterprise cloud applications.
