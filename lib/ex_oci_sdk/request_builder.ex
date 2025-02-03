@@ -1,3 +1,5 @@
+# Copyright 2025 Alan Franzin. Licensed under Apache-2.0.
+
 defmodule ExOciSdk.RequestBuilder do
   @moduledoc false
   # Builds HTTP requests with configurable method, URL, headers, query params and body.

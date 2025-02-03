@@ -66,6 +66,7 @@ defmodule ExOciSdk.MixProject do
 
   defp extras do
     [
+      "CHANGELOG.md",
       "guides/overview.md",
       "guides/installation.md",
       "guides/configuration_and_client/config.md",

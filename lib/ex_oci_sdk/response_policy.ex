@@ -1,3 +1,5 @@
+# Copyright 2025 Alan Franzin. Licensed under Apache-2.0.
+
 defmodule ExOciSdk.ResponsePolicy do
   @moduledoc false
   # Defines policies for handling HTTP responses

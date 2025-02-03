@@ -1,3 +1,5 @@
+# Copyright 2025 Alan Franzin. Licensed under Apache-2.0.
+
 defmodule ExOciSdk.Config do
   alias ExOciSdk.INIParser
 

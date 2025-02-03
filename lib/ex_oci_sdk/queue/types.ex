@@ -1,3 +1,5 @@
+# Copyright 2025 Alan Franzin. Licensed under Apache-2.0.
+
 defmodule ExOciSdk.Queue.Types do
   @moduledoc """
   Defines types used by the Queue Client.

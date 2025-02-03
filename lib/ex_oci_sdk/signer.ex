@@ -1,3 +1,5 @@
+# Copyright 2025 Alan Franzin. Licensed under Apache-2.0.
+
 defmodule ExOciSdk.Signer do
   @moduledoc false
   # Handles request signing for the OCI (Oracle Cloud Infrastructure) API.
