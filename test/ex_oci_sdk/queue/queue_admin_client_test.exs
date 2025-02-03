@@ -287,6 +287,13 @@ defmodule ExOciSdk.Queue.QueueAdminClientTest do
       expect(ExOciSdk.JSONMock, :deps, fn -> [String] end)
 
       create_queue_input = %{
+        "display_name" => "test-queue",
+        "compartment_id" => "ocid1.compartment.oc1.xxx",
+        "retention_in_seconds" => 3600,
+        "visibility_in_seconds" => 30
+      }
+
+      create_queue_input_converted = %{
         "displayName" => "test-queue",
         "compartmentId" => "ocid1.compartment.oc1.xxx",
         "retentionInSeconds" => 3600,
@@ -301,7 +308,7 @@ defmodule ExOciSdk.Queue.QueueAdminClientTest do
       })
 
       expect(ExOciSdk.JSONMock, :encode_to_iodata!, fn input, _options ->
-        assert input == create_queue_input
+        assert input == create_queue_input_converted
         create_queue_string
       end)
 
