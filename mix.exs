@@ -5,7 +5,7 @@ defmodule ExOciSdk.MixProject do
     [
       app: :ex_oci_sdk,
       description: "Elixir SDK for Oracle Cloud Infrastructure (OCI)",
-      version: "0.1.0",
+      version: "0.2.0",
       elixir: "~> 1.18",
       source_url: "https://github.com/franzinBr/ex-oci-sdk",
       homepage_url: "https://github.com/franzinBr/ex-oci-sdk",
@@ -41,9 +41,10 @@ defmodule ExOciSdk.MixProject do
 
   defp docs do
     [
-      main: "readme",
+      main: "overview",
       groups_for_modules: groups_for_modules(),
-      extras: ["README.md"]
+      extras: extras(),
+      groups_for_extras: groups_for_extras()
     ]
   end
 
@@ -57,8 +58,28 @@ defmodule ExOciSdk.MixProject do
       ],
       Queue: [
         ExOciSdk.Queue.QueueClient,
+        ExOciSdk.Queue.QueueAdminClient,
         ExOciSdk.Queue.Types
       ]
+    ]
+  end
+
+  defp extras do
+    [
+      "CHANGELOG.md",
+      "guides/overview.md",
+      "guides/installation.md",
+      "guides/configuration_and_client/config.md",
+      "guides/configuration_and_client/client.md",
+      "guides/queue/queue_client.md",
+      "guides/queue/queue_admin_client.md"
+    ]
+  end
+
+  defp groups_for_extras do
+    [
+      "Configuration & Base Client": ~r/guides\/configuration_and_client\/.?/,
+      Queue: ~r/guides\/queue\/.?/
     ]
   end
 end

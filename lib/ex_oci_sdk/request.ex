@@ -1,3 +1,5 @@
+# Copyright 2025 Alan Franzin. Licensed under Apache-2.0.
+
 defmodule ExOciSdk.Request do
   @moduledoc false
   # Handles HTTP request execution for the OCI SDK, including URL building, body building, request signing,

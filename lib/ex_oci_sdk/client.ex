@@ -1,3 +1,5 @@
+# Copyright 2025 Alan Franzin. Licensed under Apache-2.0.
+
 defmodule ExOciSdk.Client do
   @moduledoc """
   Main client for interacting with the OCI API.

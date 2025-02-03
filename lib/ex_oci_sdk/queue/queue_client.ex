@@ -1,3 +1,17 @@
+# Copyright 2025 Alan Franzin
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 defmodule ExOciSdk.Queue.QueueClient do
   @moduledoc """
   Client for interacting with OCI Queue Service messages and operations.
@@ -106,8 +120,8 @@ defmodule ExOciSdk.Queue.QueueClient do
 
     * `queue_client` - Queue client instance `t:t/0`
     * `queue_id` - Target queue identifier
-    * `put_messages_input` - Message details, see `t:ExOciSdk.Queue.Types.put_messages_input/0`
-    * `opts` - Options list, see `t:ExOciSdk.Queue.Types.queue_client_default_opts/0`
+    * `put_messages_input` - Message input, see `t:ExOciSdk.Queue.Types.put_messages_input/0`
+    * `opts` - Options list, see `t:ExOciSdk.Queue.Types.queue_default_opts/0`
 
   ## Returns
 
@@ -118,7 +132,7 @@ defmodule ExOciSdk.Queue.QueueClient do
           t(),
           Types.queue_id(),
           Types.put_messages_input(),
-          Types.queue_client_default_opts()
+          Types.queue_default_opts()
         ) ::
           {:ok, ResponseTypes.response_success()} | {:error, ResponseTypes.response_error()}
   def put_messages(%__MODULE__{} = queue_client, queue_id, put_messages_input, opts \\ []) do
@@ -208,7 +222,7 @@ defmodule ExOciSdk.Queue.QueueClient do
     * `queue_client` - Queue client instance `t:t/0`
     * `queue_id` - Target queue identifier
     * `message_receipt` - Receipt of the message to delete
-    * `opts` - Options list, see `t:ExOciSdk.Queue.Types.queue_client_default_opts/0`
+    * `opts` - Options list, see `t:ExOciSdk.Queue.Types.queue_default_opts/0`
 
   ## Returns
 
@@ -219,7 +233,7 @@ defmodule ExOciSdk.Queue.QueueClient do
           t(),
           Types.queue_id(),
           Types.message_receipt(),
-          Types.queue_client_default_opts()
+          Types.queue_default_opts()
         ) :: {:ok, ResponseTypes.response_success()} | {:error, ResponseTypes.response_error()}
   def delete_message(%__MODULE__{} = queue_client, queue_id, message_receipt, opts \\ []) do
     settings = service_settings()
@@ -245,8 +259,8 @@ defmodule ExOciSdk.Queue.QueueClient do
 
     * `queue_client` - Queue client instance `t:t/0`
     * `queue_id` - Target queue identifier
-    * `delete_messages_input` - Details of messages to delete, see `t:ExOciSdk.Queue.Types.delete_messages_input/0`
-    * `opts` - Options list, see `t:ExOciSdk.Queue.Types.queue_client_default_opts/0`
+    * `delete_messages_input` - input of messages to delete, see `t:ExOciSdk.Queue.Types.delete_messages_input/0`
+    * `opts` - Options list, see `t:ExOciSdk.Queue.Types.queue_default_opts/0`
 
   ## Returns
 
@@ -257,7 +271,7 @@ defmodule ExOciSdk.Queue.QueueClient do
           t(),
           Types.queue_id(),
           Types.delete_messages_input(),
-          Types.queue_client_default_opts()
+          Types.queue_default_opts()
         ) ::
           {:ok, ResponseTypes.response_success()} | {:error, ResponseTypes.response_error()}
   def delete_messages(%__MODULE__{} = queue_client, queue_id, delete_messages_input, opts \\ []) do
@@ -286,8 +300,8 @@ defmodule ExOciSdk.Queue.QueueClient do
     * `queue_client` - Queue client instance `t:t/0`
     * `queue_id` - Target queue identifier
     * `message_receipt` - Receipt of the message to update
-    * `update_message_input` - Update details, see `t:ExOciSdk.Queue.Types.update_message_input/0`
-    * `opts` - Options list, see `t:ExOciSdk.Queue.Types.queue_client_default_opts/0`
+    * `update_message_input` - Update input, see `t:ExOciSdk.Queue.Types.update_message_input/0`
+    * `opts` - Options list, see `t:ExOciSdk.Queue.Types.queue_default_opts/0`
 
   ## Returns
 
@@ -299,7 +313,7 @@ defmodule ExOciSdk.Queue.QueueClient do
           Types.queue_id(),
           Types.message_receipt(),
           Types.update_message_input(),
-          Types.queue_client_default_opts()
+          Types.queue_default_opts()
         ) ::
           {:ok, ResponseTypes.response_success()} | {:error, ResponseTypes.response_error()}
   def update_message(
@@ -333,8 +347,8 @@ defmodule ExOciSdk.Queue.QueueClient do
 
     * `queue_client` - Queue client instance `t:t/0`
     * `queue_id` - Target queue identifier
-    * `update_messages_input` - Update details, see `t:ExOciSdk.Queue.Types.update_messages_input/0`
-    * `opts` - Options list, see `t:ExOciSdk.Queue.Types.queue_client_default_opts/0`
+    * `update_messages_input` - Update input, see `t:ExOciSdk.Queue.Types.update_messages_input/0`
+    * `opts` - Options list, see `t:ExOciSdk.Queue.Types.queue_default_opts/0`
 
   ## Returns
 
@@ -345,7 +359,7 @@ defmodule ExOciSdk.Queue.QueueClient do
           t(),
           Types.queue_id(),
           Types.update_messages_input(),
-          Types.queue_client_default_opts()
+          Types.queue_default_opts()
         ) ::
           {:ok, ResponseTypes.response_success()} | {:error, ResponseTypes.response_error()}
   def update_messages(%__MODULE__{} = queue_client, queue_id, update_messages_input, opts \\ []) do
