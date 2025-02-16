@@ -161,6 +161,44 @@ defmodule ExOciSdk.INIParserTest do
                %{"section" => %{"key" => "value"}}
              }
     end
+
+    test "handles tilde (~) expansion for current user" do
+      path = Path.join(__DIR__, "../support/ini")
+      home_relative_path = "~/#{Path.relative_to(path, System.user_home())}"
+
+      assert INIParser.parse_file(home_relative_path) == {
+               :ok,
+               %{"section" => %{"key" => "value"}}
+             }
+    end
+
+    test "handles current directory (./) expansion" do
+      path = Path.join(__DIR__, "../support/ini")
+      current_dir_path = "./#{Path.relative_to(path, File.cwd!())}"
+
+      assert INIParser.parse_file(current_dir_path) == {
+               :ok,
+               %{"section" => %{"key" => "value"}}
+             }
+    end
+
+    test "handles parent directory (../) expansion" do
+      path = "../ex_oci_sdk/test/support/ini"
+
+      assert INIParser.parse_file(path) == {
+               :ok,
+               %{"section" => %{"key" => "value"}}
+             }
+    end
+
+    test "handles multiple slashes normalization" do
+      path = Path.join(__DIR__, "///..//support//ini")
+
+      assert INIParser.parse_file(path) == {
+               :ok,
+               %{"section" => %{"key" => "value"}}
+             }
+    end
   end
 
   describe "error handling" do

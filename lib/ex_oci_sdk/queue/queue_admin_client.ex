@@ -70,7 +70,7 @@ defmodule ExOciSdk.Queue.QueueAdminClient do
         }
 
   @doc """
-  Creates a new QueueClient instance.
+  Creates a new QueueAdminClient instance.
 
   ## Parameters
 
