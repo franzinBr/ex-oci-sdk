@@ -19,7 +19,9 @@ defmodule ExOciSdk.INIParser do
   """
   @spec parse_file(String.t()) :: parse_result()
   def parse_file(path) when is_binary(path) do
-    case File.read(path) do
+    expanded_path = Path.expand(path)
+
+    case File.read(expanded_path) do
       {:ok, content} -> parse(content)
       {:error, reason} -> {:error, "Failed to read file: #{reason}"}
     end
