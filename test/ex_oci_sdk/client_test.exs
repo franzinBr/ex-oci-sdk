@@ -71,13 +71,23 @@ defmodule ExOciSdk.ClientTest do
       %{config: config}
     end
 
+    defp expected_json_parser do
+      elixir_version = System.version()
+
+      if Version.match?(elixir_version, ">= 1.18.0") do
+        {ExOciSdk.JSON.Native, []}
+      else
+        {ExOciSdk.JSON.Jason, []}
+      end
+    end
+
     test "create client with default options", %{config: config} do
       client = Client.create!(config)
 
       assert %Client{} = client
       assert client.config == config
       assert {ExOciSdk.HTTPClient.Hackney, []} == client.http_client
-      assert {ExOciSdk.JSON.Jason, []} == client.json
+      assert expected_json_parser() == client.json
     end
 
     test "create client with valid custom http client module and valid options", %{config: config} do
@@ -87,7 +97,7 @@ defmodule ExOciSdk.ClientTest do
       assert %Client{} = client
       assert client.config == config
       assert http_client == client.http_client
-      assert {ExOciSdk.JSON.Jason, []} == client.json
+      assert expected_json_parser() == client.json
     end
 
     test "create client with valid custom json module and valid options", %{config: config} do

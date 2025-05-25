@@ -1,5 +1,9 @@
 # Changelog
 All notable changes to ExOciSdk will be documented in this file.
+## [0.2.2] - W.I.P
+
+### Added
+- Support the native JSON module for Elixir >= 1.18.0
 
 ## [0.2.1] - 2025-02-16
 
