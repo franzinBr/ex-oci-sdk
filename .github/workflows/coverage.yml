@@ -1,12 +1,10 @@
-name: CI
+name: coverage
 
 on:
   push:
     branches: [ master ]
   pull_request:
-    branches:
-      - master
-      - "release/**"
+    branches: [ master ]
 
 jobs:
   test:
