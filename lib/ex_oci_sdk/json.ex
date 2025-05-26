@@ -88,6 +88,8 @@ defmodule ExOciSdk.JSON.Native do
   - Erlang/OTP 27 or later
   """
 
+  @compile {:no_warn_undefined, [JSON]}
+
   @behaviour ExOciSdk.JSON
 
   @doc """
