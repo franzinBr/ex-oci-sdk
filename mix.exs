@@ -6,7 +6,7 @@ defmodule ExOciSdk.MixProject do
       app: :ex_oci_sdk,
       description: "Elixir SDK for Oracle Cloud Infrastructure (OCI)",
       version: "0.2.2",
-      elixir: "~> 1.18",
+      elixir: "~> 1.16",
       source_url: "https://github.com/franzinBr/ex-oci-sdk",
       homepage_url: "https://github.com/franzinBr/ex-oci-sdk",
       start_permanent: Mix.env() == :prod,
