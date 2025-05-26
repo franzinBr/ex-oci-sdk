@@ -1,4 +1,5 @@
 [![Hex.pm](https://img.shields.io/hexpm/v/ex_oci_sdk?style=flat&color=blue)](https://hex.pm/packages/ex_oci_sdk)
+[![Coverage Status](https://coveralls.io/repos/github/franzinBr/ex-oci-sdk/badge.svg?branch=master)](https://coveralls.io/github/franzinBr/ex-oci-sdk?branch=master)
 [![Docs](https://img.shields.io/badge/docs-exocisdk-yellow)](https://hexdocs.pm/ex_oci_sdk)
 
 # ex-oci-sdk
