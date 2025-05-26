@@ -92,7 +92,8 @@ defmodule ExOciSdk.MixProject do
       "coveralls.detail": :test,
       "coveralls.post": :test,
       "coveralls.html": :test,
-      "coveralls.cobertura": :test
+      "coveralls.cobertura": :test,
+      "coveralls.github": :test
     ]
   end
 end
