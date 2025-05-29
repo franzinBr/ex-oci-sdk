@@ -148,4 +148,159 @@ defmodule ExOciSdk.ConfigTest do
                    end
     end
   end
+
+  describe "from_runtime!/0" do
+    defp app_name, do: :ex_oci_sdk
+
+    defp clear_env do
+      [:user, :fingerprint, :tenancy, :region, :key_file, :key_content]
+      |> Enum.each(&Application.delete_env(app_name(), &1))
+    end
+
+    defp setup_keyless_config_runtime do
+      Application.put_env(app_name(), :user, "ocid1.user.oc1..test")
+      Application.put_env(app_name(), :fingerprint, "aa:bb:cc:dd:ee:ff")
+      Application.put_env(app_name(), :tenancy, "ocid1.tenancy.oc1..test")
+      Application.put_env(app_name(), :region, "sa-saopaulo-1")
+    end
+
+    defp setup_config_runtime do
+      Application.put_env(app_name(), :user, "ocid1.user.oc1..test")
+      Application.put_env(app_name(), :fingerprint, "aa:bb:cc:dd:ee:ff")
+      Application.put_env(app_name(), :tenancy, "ocid1.tenancy.oc1..test")
+      Application.put_env(app_name(), :region, "sa-saopaulo-1")
+
+      Application.put_env(
+        app_name(),
+        :key_file,
+        Path.join(__DIR__, "../support/key_content_file.pem")
+      )
+    end
+
+    setup do
+      clear_env()
+      on_exit(fn -> clear_env() end)
+    end
+
+    test "create config from runtime with key_content" do
+      setup_keyless_config_runtime()
+
+      key_content = """
+
+      # This private key is for testing only, please never expose your private keys directly in the code
+
+      -----BEGIN RSA PRIVATE KEY-----
+      MIICXQIBAAKBgQC5VE0N2bcbZ8Ery8F6Z4GpKf1CBp4bA/fUSS3NcstPrnJt08sc
+      InxTP04ncKU8fiWv6vMfGQTUoi59lDFsZr/7c4T+iS7mw20VXtylq0l58JmhnJVc
+      JHY8GDZ7fNAe8Er3N8RYVCWenTtweZxqzvUYTg4WkYY56C9w3eXNoto0jwIDAQAB
+      AoGAE759bwpQzaSiGc5dUHMShzkn+A7IbUxg7MbXEFo4esa0/ipgKyEpaZ0G8IC5
+      udYeob1AJYH+18Bnf414LnpL3YmpV+2/MG+MA+ZNLj3AjwvZCHFr3+LO/zyXp2gB
+      9bnAastFhIeRbHGt2BSS04/084HVg45aIPU/IlFCigupl5ECQQDbzYi0Gv3xkB4T
+      cVWVaRBKqZHz+/jbslWAA3JLxkyBV8/rxw4TpJ9kqPQTapiI+pEJjowkihGD0Wi4
+      yxm0d3k9AkEA19ltgYMlgt5hLG8IaA1DImDVkD3SgMIQ2TYwb6/H4l5FTQEvFFwv
+      I6mFVI/TyNs8S0fUyehPbWI6Sggs66+JuwJAY91uTuY0mpwwDgVgLRIfJM0GUyQY
+      XTkZP6BRPbxK5jlPboByFNqm0MUyn9++jf3KB92MLs3MR2fNfKhKdYQSwQJBALg6
+      W7yustV/+HB0VDh7GVG+VIlIOuKqwLakCbNJ1NDgpUWUPRqjk5hcl/AU0i4c8NlP
+      9c5e+Wvi6t1FHRIMQQECQQC0KmUegFuKF7Mm8VVs8Bl7r+UnGgI3TGpjFI8ubaln
+      QHrxjNFWcaB9FmXzY4OQvI4LBwYKwkXgcNfJJNqJSSmy
+      -----END RSA PRIVATE KEY-----
+      """
+
+      Application.put_env(app_name(), :key_content, key_content)
+      config = ExOciSdk.Config.from_runtime!()
+
+      assert %Config{} = config
+    end
+
+    test "create config from runtime with key_file" do
+      setup_keyless_config_runtime()
+      key_content_file_path = Path.join(__DIR__, "../support/key_content_file.pem")
+
+      Application.put_env(app_name(), :key_file, key_content_file_path)
+      config = ExOciSdk.Config.from_runtime!()
+
+      assert %Config{} = config
+    end
+
+    test "raise RuntimeError when app doesnt have runtime env configuration" do
+      assert_raise RuntimeError, ~r/No configuration found for :/, fn ->
+        ExOciSdk.Config.from_runtime!()
+      end
+    end
+
+    test "raise RuntimeError when app doesnt have :user in runtime env" do
+      setup_config_runtime()
+      Application.delete_env(app_name(), :user)
+
+      assert_raise RuntimeError, ~r/No user found for :/, fn ->
+        ExOciSdk.Config.from_runtime!()
+      end
+    end
+
+    test "raise RuntimeError when app doesnt have :fingerprint in runtime env" do
+      setup_config_runtime()
+      Application.delete_env(app_name(), :fingerprint)
+
+      assert_raise RuntimeError, ~r/No fingerprint found for :/, fn ->
+        ExOciSdk.Config.from_runtime!()
+      end
+    end
+
+    test "raise RuntimeError when app doesnt have :tenancy in runtime env" do
+      setup_config_runtime()
+      Application.delete_env(app_name(), :tenancy)
+
+      assert_raise RuntimeError, ~r/No tenancy found for :/, fn ->
+        ExOciSdk.Config.from_runtime!()
+      end
+    end
+
+    test "raise RuntimeError when app doesnt have :region in runtime env" do
+      setup_config_runtime()
+      Application.delete_env(app_name(), :region)
+
+      assert_raise RuntimeError, ~r/No region found for :/, fn ->
+        ExOciSdk.Config.from_runtime!()
+      end
+    end
+
+    test "raise RuntimeError when app have both key_content and key_file in runtime env" do
+      setup_config_runtime()
+
+      key_content = """
+
+      # This private key is for testing only, please never expose your private keys directly in the code
+
+      -----BEGIN RSA PRIVATE KEY-----
+      MIICXQIBAAKBgQC5VE0N2bcbZ8Ery8F6Z4GpKf1CBp4bA/fUSS3NcstPrnJt08sc
+      InxTP04ncKU8fiWv6vMfGQTUoi59lDFsZr/7c4T+iS7mw20VXtylq0l58JmhnJVc
+      JHY8GDZ7fNAe8Er3N8RYVCWenTtweZxqzvUYTg4WkYY56C9w3eXNoto0jwIDAQAB
+      AoGAE759bwpQzaSiGc5dUHMShzkn+A7IbUxg7MbXEFo4esa0/ipgKyEpaZ0G8IC5
+      udYeob1AJYH+18Bnf414LnpL3YmpV+2/MG+MA+ZNLj3AjwvZCHFr3+LO/zyXp2gB
+      9bnAastFhIeRbHGt2BSS04/084HVg45aIPU/IlFCigupl5ECQQDbzYi0Gv3xkB4T
+      cVWVaRBKqZHz+/jbslWAA3JLxkyBV8/rxw4TpJ9kqPQTapiI+pEJjowkihGD0Wi4
+      yxm0d3k9AkEA19ltgYMlgt5hLG8IaA1DImDVkD3SgMIQ2TYwb6/H4l5FTQEvFFwv
+      I6mFVI/TyNs8S0fUyehPbWI6Sggs66+JuwJAY91uTuY0mpwwDgVgLRIfJM0GUyQY
+      XTkZP6BRPbxK5jlPboByFNqm0MUyn9++jf3KB92MLs3MR2fNfKhKdYQSwQJBALg6
+      W7yustV/+HB0VDh7GVG+VIlIOuKqwLakCbNJ1NDgpUWUPRqjk5hcl/AU0i4c8NlP
+      9c5e+Wvi6t1FHRIMQQECQQC0KmUegFuKF7Mm8VVs8Bl7r+UnGgI3TGpjFI8ubaln
+      QHrxjNFWcaB9FmXzY4OQvI4LBwYKwkXgcNfJJNqJSSmy
+      -----END RSA PRIVATE KEY-----
+      """
+
+      Application.put_env(app_name(), :key_content, key_content)
+
+      assert_raise RuntimeError, ~r/Both key_content and key_file are found for :/, fn ->
+        ExOciSdk.Config.from_runtime!()
+      end
+    end
+
+    test "raise RuntimeError when app doesnt have key_file or key_content in runtime env" do
+      setup_keyless_config_runtime()
+
+      assert_raise RuntimeError, ~r/No key_content OR key_file found for :/, fn ->
+        ExOciSdk.Config.from_runtime!()
+      end
+    end
+  end
 end
