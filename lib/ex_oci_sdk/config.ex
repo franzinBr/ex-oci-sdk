@@ -173,19 +173,19 @@ defmodule ExOciSdk.Config do
   ```elixir
   # In config/runtime.exs
   config :ex_oci_sdk,
-    user: "ocid1.user.oc1...",
-    fingerprint: "aa:bb:cc:dd:ee:ff:00:11:22:33:44:55:66:77:88:99",
-    tenancy: "ocid1.tenancy.oc1...",
-    region: "sa-saopaulo-1",
-    key_file: "/path/to/private_key.pem"
+    user: System.get_env("OCI_USER_OCID"),
+    fingerprint: System.get_env("OCI_KEY_FINGERPRINT"),
+    tenancy: System.get_env("OCI_TENANCY_OCID"),
+    region: System.get_env("OCI_REGION") || "sa-saopaulo-1",
+    key_file: System.get_env("OCI_PRIVATE_KEY_PATH") || "~/.oci/oci_api_key.pem"
 
   # OR with key_content
   config :ex_oci_sdk,
-    user: "ocid1.user.oc1...",
-    fingerprint: "aa:bb:cc:dd:ee:ff:00:11:22:33:44:55:66:77:88:99",
-    tenancy: "ocid1.tenancy.oc1...",
-    region: "sa-saopaulo-1",
-    key_content: "-----BEGIN RSA PRIVATE KEY-----..."
+    user: System.get_env("OCI_USER_OCID"),
+    fingerprint: System.get_env("OCI_KEY_FINGERPRINT"),
+    tenancy: System.get_env("OCI_TENANCY_OCID"),
+    region: System.get_env("OCI_REGION") || "sa-saopaulo-1",
+    key_content: System.get_env("OCI_PRIVATE_KEY_CONTENT")
   ```
 
   ## Returns
@@ -198,7 +198,9 @@ defmodule ExOciSdk.Config do
     * `RuntimeError` - If neither `key_content` nor `key_file` is provided
     * All raises from `new!/1` (including key validation errors)
 
+
   """
+  @doc since: "0.2.2"
   @spec from_runtime!() :: t() | no_return()
   def from_runtime!() do
     app_name = :ex_oci_sdk

@@ -57,7 +57,8 @@ defmodule ExOciSdk.MixProject do
         ExOciSdk.HTTPClient,
         ExOciSdk.HTTPClient.Hackney,
         ExOciSdk.JSON,
-        ExOciSdk.JSON.Jason
+        ExOciSdk.JSON.Jason,
+        ExOciSdk.JSON.Native
       ],
       Queue: [
         ExOciSdk.Queue.QueueClient,

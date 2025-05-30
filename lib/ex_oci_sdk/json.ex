@@ -87,7 +87,7 @@ defmodule ExOciSdk.JSON.Native do
   - Elixir 1.18.0 or later
   - Erlang/OTP 27 or later
   """
-
+  @moduledoc since: "0.2.0"
   @compile {:no_warn_undefined, [JSON]}
 
   @behaviour ExOciSdk.JSON
