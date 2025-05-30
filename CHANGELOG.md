@@ -6,6 +6,9 @@ All notable changes to ExOciSdk will be documented in this file.
 - Support the native JSON module for Elixir >= 1.18.0
 - `ExOciSdk.Config.from_runtime!/0` to create oci configuration from runtime envs
 
+### Changed
+- Changes the minimum elixir version from 1.18 to 1.15
+
 ## [0.2.1] - 2025-02-16
 
 ### Fixed
