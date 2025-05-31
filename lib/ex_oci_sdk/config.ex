@@ -342,7 +342,7 @@ defmodule ExOciSdk.Config do
   end
 
   @doc false
-  @spec validate_key_content!(atom()) :: :ok | no_return()
+  @spec validate_key_content!(String.t()) :: :ok | no_return()
   defp validate_key_content!(key_content) do
     case :public_key.pem_decode(key_content) do
       [] ->
