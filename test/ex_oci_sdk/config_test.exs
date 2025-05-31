@@ -303,4 +303,20 @@ defmodule ExOciSdk.ConfigTest do
       end
     end
   end
+
+  describe "struct" do
+    test "that the key content was hidden in the inspect protocol" do
+      key_content_file_path = Path.join(__DIR__, "../support/key_content_file.pem")
+
+      config_values =
+        @opts_without_key |> Map.put(:key_file, key_content_file_path)
+
+      config =
+        Config.new!(config_values)
+
+      inspect_string = inspect(config)
+
+      assert String.contains?(inspect_string, "key_content: \"<redacted>\"")
+    end
+  end
 end

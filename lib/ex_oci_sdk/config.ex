@@ -57,6 +57,18 @@ defmodule ExOciSdk.Config do
           key_file: String.t() | nil
         }
 
+  defimpl Inspect, for: ExOciSdk.Config do
+    def inspect(%ExOciSdk.Config{} = config, opts) do
+      Inspect.Any.inspect(
+        %{
+          config
+          | key_content: "<redacted>"
+        },
+        opts
+      )
+    end
+  end
+
   @doc """
   Creates a new configuration struct with the provided options.
 
