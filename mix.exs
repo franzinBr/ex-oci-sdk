@@ -5,14 +5,16 @@ defmodule ExOciSdk.MixProject do
     [
       app: :ex_oci_sdk,
       description: "Elixir SDK for Oracle Cloud Infrastructure (OCI)",
-      version: "0.2.1",
-      elixir: "~> 1.18",
+      version: "0.2.2",
+      elixir: "~> 1.15",
       source_url: "https://github.com/franzinBr/ex-oci-sdk",
       homepage_url: "https://github.com/franzinBr/ex-oci-sdk",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       package: package(),
-      docs: docs()
+      docs: docs(),
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: preferred_cli_env()
     ]
   end
 
@@ -27,7 +29,8 @@ defmodule ExOciSdk.MixProject do
       {:hackney, "~> 1.20.1", optional: true},
       {:jason, "~> 1.4.4", optional: true},
       {:mox, "~> 1.0", only: :test},
-      {:ex_doc, "~> 0.34", only: :dev, runtime: false}
+      {:ex_doc, "~> 0.34", only: :dev, runtime: false},
+      {:excoveralls, "~> 0.18", only: :test}
     ]
   end
 
@@ -54,7 +57,8 @@ defmodule ExOciSdk.MixProject do
         ExOciSdk.HTTPClient,
         ExOciSdk.HTTPClient.Hackney,
         ExOciSdk.JSON,
-        ExOciSdk.JSON.Jason
+        ExOciSdk.JSON.Jason,
+        ExOciSdk.JSON.Native
       ],
       Queue: [
         ExOciSdk.Queue.QueueClient,
@@ -80,6 +84,17 @@ defmodule ExOciSdk.MixProject do
     [
       "Configuration & Base Client": ~r/guides\/configuration_and_client\/.?/,
       Queue: ~r/guides\/queue\/.?/
+    ]
+  end
+
+  defp preferred_cli_env do
+    [
+      coveralls: :test,
+      "coveralls.detail": :test,
+      "coveralls.post": :test,
+      "coveralls.html": :test,
+      "coveralls.cobertura": :test,
+      "coveralls.github": :test
     ]
   end
 end

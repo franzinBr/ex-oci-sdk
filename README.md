@@ -1,4 +1,6 @@
 [![Hex.pm](https://img.shields.io/hexpm/v/ex_oci_sdk?style=flat&color=blue)](https://hex.pm/packages/ex_oci_sdk)
+[![ci](https://github.com/franzinBr/ex-oci-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/franzinBr/ex-oci-sdk/actions/workflows/ci.yml)
+[![Coverage Status](https://coveralls.io/repos/github/franzinBr/ex-oci-sdk/badge.svg?branch=master)](https://coveralls.io/github/franzinBr/ex-oci-sdk?branch=master)
 [![Docs](https://img.shields.io/badge/docs-exocisdk-yellow)](https://hexdocs.pm/ex_oci_sdk)
 
 # ex-oci-sdk
@@ -12,10 +14,10 @@ The package can be installed by adding `ex_oci_sdk` to your list of dependencies
 ```elixir
 def deps do
   [
-    {:ex_oci_sdk, "~> 0.2.1"},
+    {:ex_oci_sdk, "~> 0.2.2"},
     # Optional dependencies
     {:hackney, "~> 1.20.1"},  # Default HTTP client
-    {:jason, "~> 1.4.4"}      # Default JSON parser
+    {:jason, "~> 1.4.4"}      # JSON parser (only needed for Elixir < 1.18.0)
   ]
 end
 ```

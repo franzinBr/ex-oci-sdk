@@ -57,6 +57,18 @@ defmodule ExOciSdk.Config do
           key_file: String.t() | nil
         }
 
+  defimpl Inspect, for: ExOciSdk.Config do
+    def inspect(%ExOciSdk.Config{} = config, opts) do
+      Inspect.Any.inspect(
+        %{
+          config
+          | key_content: "<redacted>"
+        },
+        opts
+      )
+    end
+  end
+
   @doc """
   Creates a new configuration struct with the provided options.
 
@@ -153,6 +165,180 @@ defmodule ExOciSdk.Config do
       region: config["region"],
       key_file: config["key_file"]
     })
+  end
+
+  @doc """
+  Creates a new configuration from the application runtime environment.
+
+  This function reads OCI configuration values from the application's runtime configuration and creates a new configuration struct.
+  It looks for configuration under the `:ex_oci_sdk` application key.
+
+  The function expects the following configuration keys to be present:
+  - `user` - The OCID of the user making the request
+  - `fingerprint` - Fingerprint of the public key uploaded to OCI
+  - `tenancy` - The OCID of your tenancy
+  - `region` - The region of the OCI services being accessed
+  - Either `key_content` (private key as string) OR `key_file` (path to private key file)
+
+  ## Example Configuration
+
+  ```elixir
+  # In config/runtime.exs
+  config :ex_oci_sdk,
+    user: System.get_env("OCI_USER_OCID"),
+    fingerprint: System.get_env("OCI_KEY_FINGERPRINT"),
+    tenancy: System.get_env("OCI_TENANCY_OCID"),
+    region: System.get_env("OCI_REGION") || "sa-saopaulo-1",
+    key_file: System.get_env("OCI_PRIVATE_KEY_PATH") || "~/.oci/oci_api_key.pem"
+
+  # OR with key_content
+  config :ex_oci_sdk,
+    user: System.get_env("OCI_USER_OCID"),
+    fingerprint: System.get_env("OCI_KEY_FINGERPRINT"),
+    tenancy: System.get_env("OCI_TENANCY_OCID"),
+    region: System.get_env("OCI_REGION") || "sa-saopaulo-1",
+    key_content: System.get_env("OCI_PRIVATE_KEY_CONTENT")
+  ```
+
+  ## Returns
+    * `t:t/0` - The configuration struct
+
+  ## Raises
+    * `RuntimeError` - If no configuration is found for `:ex_oci_sdk`
+    * `RuntimeError` - If any required configuration key is missing
+    * `RuntimeError` - If both `key_content` and `key_file` are provided
+    * `RuntimeError` - If neither `key_content` nor `key_file` is provided
+    * All raises from `new!/1` (including key validation errors)
+
+
+  """
+  @doc since: "0.2.2"
+  @spec from_runtime!() :: t() | no_return()
+  def from_runtime!() do
+    app_name = :ex_oci_sdk
+    config = Application.get_all_env(app_name)
+
+    if config == [], do: raise_no_config_error!(app_name)
+
+    keyless_config = %{
+      user:
+        Application.get_env(app_name, :user) ||
+          raise_default_env_missing_error!(app_name, :user),
+      fingerprint:
+        Application.get_env(app_name, :fingerprint) ||
+          raise_default_env_missing_error!(app_name, :fingerprint),
+      tenancy:
+        Application.get_env(app_name, :tenancy) ||
+          raise_default_env_missing_error!(app_name, :tenancy),
+      region:
+        Application.get_env(app_name, :region) ||
+          raise_default_env_missing_error!(app_name, :region)
+    }
+
+    keyless_config
+    |> add_key_config!(app_name)
+    |> new!()
+  end
+
+  @doc false
+  @spec add_key_config!(map(), atom()) :: map() | no_return()
+  defp add_key_config!(keyless_config, app_name) do
+    key_content = Application.get_env(app_name, :key_content, nil)
+    key_file = Application.get_env(app_name, :key_file, nil)
+
+    case {key_content, key_file} do
+      {nil, nil} ->
+        raise_key_env_missing_error!(app_name)
+
+      {content, nil} when not is_nil(content) ->
+        Map.put(keyless_config, :key_content, content)
+
+      {nil, file} when not is_nil(file) ->
+        Map.put(keyless_config, :key_file, file)
+
+      {_, _} ->
+        raise_key_conflict_error!(app_name)
+    end
+  end
+
+  @doc false
+  @spec raise_default_env_missing_error!(atom(), atom()) :: no_return()
+  defp raise_default_env_missing_error!(app_name, env_name) do
+    raise RuntimeError, """
+      No #{env_name} found for #{inspect(app_name)}.
+
+      Please add #{env_name} configuration to your config/runtime.exs:
+
+      config #{inspect(app_name)},
+        ...
+        #{env_name}: "value"
+        ...
+
+    """
+  end
+
+  @doc false
+  @spec raise_key_env_missing_error!(atom()) :: no_return()
+  defp raise_key_env_missing_error!(app_name) do
+    raise RuntimeError, """
+      No key_content OR key_file found for #{inspect(app_name)}.
+
+      Please add key_content OR key_file configuration to your config/runtime.exs:
+
+      # with key_file
+      config #{inspect(app_name)},
+        ...
+        key_file: "path/to/key.pem"
+
+      # OR
+
+      # with key_content
+      config #{inspect(app_name)},
+        ...
+        key_content: "-----BEGIN RSA PRIVATE KEY-----..."
+    """
+  end
+
+  @doc false
+  @spec raise_key_conflict_error!(atom()) :: no_return()
+  defp raise_key_conflict_error!(app_name) do
+    raise RuntimeError, """
+      Both key_content and key_file are found for #{inspect(app_name)}.
+
+      Please remove one of them:
+
+      # WRONG
+      config #{inspect(app_name)},
+        key_file: "path/to/key.pem"
+        key_content: "-----BEGIN RSA PRIVATE KEY-----..."
+
+      # RIGHT (with key_file)
+      config #{inspect(app_name)},
+        ...
+        key_file: "path/to/key.pem"
+
+      # RIGHT (with key_content)
+      config #{inspect(app_name)},
+        ...
+        key_content: "-----BEGIN RSA PRIVATE KEY-----..."
+    """
+  end
+
+  @doc false
+  @spec raise_no_config_error!(atom()) :: no_return()
+  defp raise_no_config_error!(app_name) do
+    raise RuntimeError, """
+    No configuration found for #{inspect(app_name)}.
+
+    Add OCI configuration to your config/runtime.exs:
+
+    config #{inspect(app_name)},
+      user: "your-user-ocid",
+      fingerprint: "your-fingerprint",
+      tenancy: "your-tenancy-ocid",
+      region: "your-region",
+      key_file: "path/to/key.pem"  # or key_content: "-----BEGIN RSA PRIVATE KEY-----..."
+    """
   end
 
   @doc false

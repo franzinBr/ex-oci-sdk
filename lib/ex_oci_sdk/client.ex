@@ -49,7 +49,7 @@ defmodule ExOciSdk.Client do
       |> validate_module_option!(:http_client, ExOciSdk.HTTPClient)
 
     json =
-      Keyword.get(opts, :json, {ExOciSdk.JSON.Jason, []})
+      Keyword.get(opts, :json, default_json_module())
       |> validate_module_option!(:json, ExOciSdk.JSON)
 
     %__MODULE__{
@@ -57,6 +57,17 @@ defmodule ExOciSdk.Client do
       http_client: http_client,
       json: json
     }
+  end
+
+  @spec default_json_module() :: {atom(), list()}
+  defp default_json_module do
+    elixir_version = System.version()
+
+    if Version.match?(elixir_version, ">= 1.18.0") do
+      {ExOciSdk.JSON.Native, []}
+    else
+      {ExOciSdk.JSON.Jason, []}
+    end
   end
 
   @spec validate_module_option!(client_option(), atom(), module()) ::

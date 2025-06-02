@@ -39,7 +39,7 @@ To authenticate with OCI, you need:
 
 ## Configuration Methods
 
-The SDK supports two ways to configure your credentials. Let's look at both:
+The SDK supports three ways to configure your credentials. Let's look at both:
 
 ### Method 1: Using OCI Config File
 
@@ -63,9 +63,70 @@ region=sa-saopaulo-1
 key_file=~/.oci/oci_api_key.pem
 ```
 
-### Method 2: Direct Configuration
+#### Profile Management
 
-For more control or in production environments, you can configure directly:
+You can maintain multiple profiles in your config file:
+
+```ini
+[DEFAULT]
+# Default profile settings...
+
+[PROD]
+# Production settings...
+
+[DEV]
+# Development settings...
+```
+
+Switch between profiles:
+```elixir
+prod_config = ExOciSdk.Config.from_file!(profile: "PROD")
+dev_config = ExOciSdk.Config.from_file!(profile: "DEV")
+```
+
+### Method 2: From runtime environments (recommended for production)
+
+This method allows you to configure OCI credentials through your Elixir application's runtime configuration.
+
+```elixir
+# Load configuration from application environment
+config = ExOciSdk.Config.from_runtime!()
+```
+
+#### Setting Up Runtime Configuration
+
+Add your OCI configuration to `config/runtime.exs`
+
+```elixir
+# config/runtime.exs
+import Config
+
+config :ex_oci_sdk,
+  user: System.get_env("OCI_USER_OCID"),
+  fingerprint: System.get_env("OCI_KEY_FINGERPRINT"),
+  tenancy: System.get_env("OCI_TENANCY_OCID"),
+  region: System.get_env("OCI_REGION") || "sa-saopaulo-1",
+  key_file: System.get_env("OCI_PRIVATE_KEY_PATH") || "~/.oci/oci_api_key.pem"
+```
+
+Alternatively, you can provide the key content directly:
+
+```elixir
+# config/runtime.exs
+import Config
+
+config :ex_oci_sdk,
+  user: System.get_env("OCI_USER_OCID"),
+  fingerprint: System.get_env("OCI_KEY_FINGERPRINT"),
+  tenancy: System.get_env("OCI_TENANCY_OCID"),
+  region: System.get_env("OCI_REGION") || "sa-saopaulo-1",
+  key_content: System.get_env("OCI_PRIVATE_KEY_CONTENT")
+```
+
+
+### Method 3: Direct Configuration
+
+For more control or development suits, you can configure directly (be careful not to expose the private key):
 
 ```elixir
 # Using key content directly
@@ -85,27 +146,6 @@ config = ExOciSdk.Config.new!(%{
   region: "sa-saopaulo-1",
   key_file: "~/.oci/oci_api_key.pem"
 })
-```
-
-## Profile Management
-
-You can maintain multiple profiles in your config file:
-
-```ini
-[DEFAULT]
-# Default profile settings...
-
-[PROD]
-# Production settings...
-
-[DEV]
-# Development settings...
-```
-
-Switch between profiles:
-```elixir
-prod_config = ExOciSdk.Config.from_file!(profile: "PROD")
-dev_config = ExOciSdk.Config.from_file!(profile: "DEV")
 ```
 
 ## Important Tips

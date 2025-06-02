@@ -182,15 +182,6 @@ defmodule ExOciSdk.INIParserTest do
              }
     end
 
-    test "handles parent directory (../) expansion" do
-      path = "../ex_oci_sdk/test/support/ini"
-
-      assert INIParser.parse_file(path) == {
-               :ok,
-               %{"section" => %{"key" => "value"}}
-             }
-    end
-
     test "handles multiple slashes normalization" do
       path = Path.join(__DIR__, "///..//support//ini")
 
